@@ -138,6 +138,74 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-机器学习——线性分类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/">机器学习——线性分类</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" class="archive-article-date">
+  	<time datetime="2020-07-05T11:50:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="线性分类"><a href="#线性分类" class="headerlink" title="线性分类"></a>线性分类</h1><p>今天也是在图书馆里摸了一天鱼（bushi），但至少还是跟着cs231n课程学习完了线性分类以及损失函数。（以下内容基于cs231n中文笔记照本宣科<br>先来谈谈线性分类，词如其名，等价于高中时做的线性规划，只不过在这里，线性规划被用于划分不同数据的标签趋向。而我们在进行分类时所使用的评判标签趋向分数高低的评分函数如下：<br><img src="https://www.zhihu.com/equation?tex=%5Cdisplaystyle+f%28x_i%2CW%2Cb%29%3DWx_i%2Bb" alt="avatar"><br>其中<strong>W</strong>是一个大小为[K x D]的矩阵，被称为权重，主要由我们训练得出，其中K为训练集中的类别，而D则取决另一参数<strong>x</strong>。<br><strong>x</strong>由我们的图像数据进行拉伸变为一个长度为D的列向量（后期深入学习之后说不定可以通过卷积，池化，大幅降低数据维度之后再计算分类？），随后<strong>x</strong>与<strong>W</strong>进行点乘后得到一个长度为K的列向量，最后再与偏差向量b相加，得到各分类评分。  </p>
+<p>我们将数据集的线性分类计算结果降至二维后可得图：<br><img src="https://pic2.zhimg.com/80/cfcb46408daa5353c38cb37e9bb6eb01_720w.jpg" alt="avatar"><br>可以看到，每一个图像是一个点，且图中有三个分类器划分相应对象的二维空间坐标区域。（这就是线性规划嘛！以前还没不知道线性规划这么有用）<br>（今天第一次使用Markdown码字，不到1000字花了近一个小时，有些累了，关于损失函数的内容将在明天更新）  </p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
+<li>我们在评分函数中输入的参数为矩阵，因此我们能够在运行程序时能够并行运算D个分类器（D为数据类型个数）。</li>
+<li>对比KNN，分类器只需要进行一次矩阵点乘以及相加，不知道简化到哪里去了。而且KNN需要使用ndarray方法将所有数据在内存中建立映射，恕我直言，实在是个败家货色。相比之下线性分类训练完就可以将训练数据丢掉，真是勤俭持家。娶妻当如线分法。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
