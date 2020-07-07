@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmax.svg">
 <meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmx_fun.svg">
 <meta property="article:published_time" content="2020-07-05T11:50:14.000Z">
-<meta property="article:modified_time" content="2020-07-07T14:03:16.149Z">
+<meta property="article:modified_time" content="2020-07-07T14:08:25.683Z">
 <meta property="article:author" content="六花酱不吃蓝莓">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.zhihu.com/equation?tex=%5Cdisplaystyle+f(x_i%252CW%252Cb)%253DWx_i%252Bb">
@@ -175,7 +175,7 @@
 <li>对比KNN，分类器只需要进行一次矩阵点乘以及相加，不知道简化到哪里去了。而且KNN需要使用ndarray方法将所有数据在内存中建立映射，恕我直言，实在是个败家货色。相比之下线性分类训练完就可以将训练数据丢掉，真是勤俭持家。娶妻当如线分法。</li>
 </ul>
 <h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>我们在进行线性分类时，一般来说超参W的训练效果不会太理想，许多数据无法归类到正确的标签。就比如课件中对猫的分类，从分数上来看，它更像是一只狗而非是猫（秦川的猫狗二相性成立）。<br><img src="https://pic3.zhimg.com/80/7c204cd1010c0af1e7b50000bfff1d8e_720w.jpg" alt><br>此时，损失函数的引入就能够用于量化表示评分函数结果的误差。直观地讲，当评分函数输出结果与真实结果之间差异越大，损失函数输出越大，反之越小。<br>损失函数的形式多种多样，而在cs231n上，主要教授了两种，分别为<strong>多类支持向量机损失 Multiclass Support Vector Machine Loss</strong>以及<strong>Softmax分类器</strong>。接下来我们将分别介绍其原理。  </p>
-<h2 id="多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss"><a href="#多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss" class="headerlink" title="多类支持向量机损失 Multiclass Support Vector Machine Loss"></a>多类支持向量机损失 Multiclass Support Vector Machine Loss</h2><p>多类支持向量机损失是最常用的一种损失函数，其原理主要是想在正确分类上的得分始终比不正确分类上的高出一个边际值$\Delta$。让我们看看SVM的定义：<br><img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/svm.svg" alt><br>在该定义式中，$S_i$为错误分类分数，而$S_{y_i}$为正确分类分数。这里有一个官方的举例用以说明其应用。  </p>
+<h2 id="多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss"><a href="#多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss" class="headerlink" title="多类支持向量机损失 Multiclass Support Vector Machine Loss"></a>多类支持向量机损失 Multiclass Support Vector Machine Loss</h2><p>多类支持向量机损失是最常用的一种损失函数，其原理主要是想在正确分类上的得分始终比不正确分类上的高出一个边际值$\Delta$。让我们看看SVM的定义：<br><img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/svm.svg" alt><br>在该定义式中，$S_i$为错误分类分数，而$S_yi$为正确分类分数。这里有一个官方的举例用以说明其应用。  </p>
 <blockquote>
 <p>举例：用一个例子演示公式是如何计算的。假设有3个分类，并且得到了分值$s=[13,-7,11]。其中第一个类别是正确类别，即$y_{i}=0。同时假设$\Delta$是10（后面会详细介绍该超参数）。上面的公式是将所有不正确分类$j\neq y_{i}$加起来，所以我们得到两个部分：<img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/exm_1.svg" alt>  </p>
 <p>在第一部分中，13与-7相差近20，大大超过安全边界值$\Delta$,因此损失值为0。而第二部分中，13与11之间的差距上式计算完成后，我们可以得到关于超参W的损失值为8。由此可见，损失函数只关心正确分类与错误分类分值相差小于$\Delta$的数据。而正确与不正确分类分数间相差越大，超参W中相关正确分类的满意度就越高。<br>我们对于预测训练集数据分类标签的情况总有一些不满意的，而损失函数就能将这些不满意的程度量化。  </p>
