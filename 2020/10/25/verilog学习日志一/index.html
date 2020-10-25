@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/%E4%BB%BF%E7%9C%9F.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/%E6%97%B6%E5%BA%8F%E4%BB%BF%E7%9C%9F.png">
 <meta property="article:published_time" content="2020-10-25T08:09:43.000Z">
-<meta property="article:modified_time" content="2020-10-25T13:09:43.311Z">
+<meta property="article:modified_time" content="2020-10-25T13:12:13.888Z">
 <meta property="article:author" content="六花酱不吃蓝莓">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/mux.png">
@@ -195,10 +195,13 @@
 <p>可以看到，当key_in为低时，LED灯与a端口状态保持一致。key_in为高时，LED灯与b端口状态保持一致。</p>
 <ul>
 <li>布局布线<br>咱毕竟不是专业工程师，就全交给compile了。</li>
-<li>时序仿真<br>我们选择Tool→Run simulation tool→Gate level(门级仿真)。模式为1.2V，0度，中速运行。随后可在Modle sim中得到如下时序图。<br><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/时序仿真.png" alt="时序仿真"><br>可以看到，在这种极端情况下，信号中出现了一些脉冲。在进行测量后得出脉冲宽度约为0.251ns。并且还会出现逻辑延迟，在按键按下后几个时钟内，led的电平才发生跳变。</li>
+<li><p>时序仿真<br>我们选择Tool→Run simulation tool→Gate level(门级仿真)。模式为1.2V，0度，中速运行。随后可在Modle sim中得到如下时序图。<br><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/时序仿真.png" alt="时序仿真"><br>可以看到，在这种极端情况下，信号中出现了一些脉冲。在进行测量后得出脉冲宽度约为0.251ns。并且还会出现逻辑延迟，在按键按下后几个时钟内，led的电平才发生跳变。</p>
+</li>
+<li><p>IO分配以及配置文件的生成<br>该部分请根据自己的开发板引脚进行分配。</p>
+</li>
+<li><p>在线调试<br>signaltap的调试功能属实强大，能够实时显示寄存器数据，还能够显示采集到的波形，这点确实比stm32的仿真功能来的更为强大，但是无法自行修改寄存器的数据也谈不上方便，只能调用Rom ip，将需要用到的激励数据存储在其中，需要时喂给寄存器。  关于其使用我将在后续的AD/DA实验中进行介绍。</p>
+</li>
 </ul>
-<p>+IO分配以及配置文件的生成<br>该部分请根据自己的开发板引脚进行分配。</p>
-<p>+在线调试<br>signaltap的调试功能属实强大，能够实时显示寄存器数据，还能够显示采集到的波形，这点确实比stm32的仿真功能来的更为强大，但是无法自行修改寄存器的数据也谈不上方便，只能调用Rom ip，将需要用到的激励数据存储在其中，需要时喂给寄存器。  关于其使用我将在后续的AD/DA实验中进行介绍。</p>
 <p>到这里，就算完成一个工程的开发了。</p>
 <p>最近一段时间也算是摸得透彻了，一开始想实现adc dma采集心电信号，结果dma传输有问题，搁置；想实现fpga与spi通讯，却一直不想动手写top module，fsmc也类似；昨天调了一晚上的LMT70，可是ADC采集误差过大，加上LMT70的采集误差，导致温度数据根本无法使用。所以这篇重启博文也算是整理目前所学，加上督促自己（上篇也是这么说的），顺便复健一下Markdown。（兄啊，这不是有手就行吗？）</p>
 <p>后续计划大概是，两周更新一次FPGA专栏，但是不会照本宣科了，计划把已经成功的AD/DA工程进行深挖，完善FIR功能，毕竟之前的FIR在衰减上有大问题。还有一周一次更新今年电赛A题的开发进度，目前问题极大，ADS1292无法正常读ID，LMT70采集不正常，害。哦，对了，说不定还会发一两张新买的DK试穿（好贵），毕竟这是没人看的博客，最适合我这小透明发自拍了。</p>
