@@ -6,27 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>机器学习——线性分类 | Hexo</title>
+  <title>verilog学习日志一 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="线性分类今天也是在图书馆里摸了一天鱼（bushi），但至少还是跟着cs231n课程学习完了线性分类以及损失函数。（以下内容基于cs231n中文笔记照本宣科先来谈谈线性分类，词如其名，等价于高中时做的线性规划，只不过在这里，线性规划被用于划分不同数据的标签趋向。而我们在进行分类时所使用的评判标签趋向分数高低的评分函数如下：其中W是一个大小为[K x D]的矩阵，被称为权重，主要由我们训练得出，其中K">
+  <meta name="description" content="小记因为电赛，学习，摸鱼等原因也摸了挺久的了，接近四个月没有更新过博客了。最近也是忙完了电赛，成绩不理想（学长独木难支），就想着还是得通过更新博客，记录学习进度，鞭策一下自己。因为明年电赛想做数字信号处理方面的题目，所以最近入了FPGA这个深坑。本专栏主要记录我用Verilog进行FPGA开发的进程。（本专栏纯属照本宣科） 正文最近一直在瞎玩儿FPGA，想到什么做什么，陆陆续续做了SPI,FIR,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习——线性分类">
-<meta property="og:url" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/index.html">
+<meta property="og:title" content="verilog学习日志一">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="线性分类今天也是在图书馆里摸了一天鱼（bushi），但至少还是跟着cs231n课程学习完了线性分类以及损失函数。（以下内容基于cs231n中文笔记照本宣科先来谈谈线性分类，词如其名，等价于高中时做的线性规划，只不过在这里，线性规划被用于划分不同数据的标签趋向。而我们在进行分类时所使用的评判标签趋向分数高低的评分函数如下：其中W是一个大小为[K x D]的矩阵，被称为权重，主要由我们训练得出，其中K">
+<meta property="og:description" content="小记因为电赛，学习，摸鱼等原因也摸了挺久的了，接近四个月没有更新过博客了。最近也是忙完了电赛，成绩不理想（学长独木难支），就想着还是得通过更新博客，记录学习进度，鞭策一下自己。因为明年电赛想做数字信号处理方面的题目，所以最近入了FPGA这个深坑。本专栏主要记录我用Verilog进行FPGA开发的进程。（本专栏纯属照本宣科） 正文最近一直在瞎玩儿FPGA，想到什么做什么，陆陆续续做了SPI,FIR,">
 <meta property="og:locale" content="ch">
-<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cdisplaystyle+f(x_i%252CW%252Cb)%253DWx_i%252Bb">
-<meta property="og:image" content="https://pic2.zhimg.com/80/cfcb46408daa5353c38cb37e9bb6eb01_720w.jpg">
-<meta property="og:image" content="https://pic3.zhimg.com/80/7c204cd1010c0af1e7b50000bfff1d8e_720w.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/svm.svg">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/exm_1.svg">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmax.svg">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmx_fun.svg">
-<meta property="article:published_time" content="2020-07-05T11:50:14.000Z">
-<meta property="article:modified_time" content="2020-07-07T14:10:08.989Z">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/mux.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/%E4%BB%BF%E7%9C%9F.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/%E6%97%B6%E5%BA%8F%E4%BB%BF%E7%9C%9F.png">
+<meta property="article:published_time" content="2020-10-25T08:09:43.000Z">
+<meta property="article:modified_time" content="2020-10-25T13:09:43.311Z">
 <meta property="article:author" content="六花酱不吃蓝莓">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=%5Cdisplaystyle+f(x_i%252CW%252Cb)%253DWx_i%252Bb">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/mux.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -148,41 +144,67 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-机器学习——线性分类" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-verilog学习日志一" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      机器学习——线性分类
+      verilog学习日志一
     </h1>
   
 
         
-        <a href="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2020-07-05T11:50:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
+        <a href="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/" class="archive-article-date">
+  	<time datetime="2020-10-25T08:09:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="线性分类"><a href="#线性分类" class="headerlink" title="线性分类"></a>线性分类</h1><p>今天也是在图书馆里摸了一天鱼（bushi），但至少还是跟着cs231n课程学习完了线性分类以及损失函数。（以下内容基于cs231n中文笔记照本宣科<br>先来谈谈线性分类，词如其名，等价于高中时做的线性规划，只不过在这里，线性规划被用于划分不同数据的标签趋向。而我们在进行分类时所使用的评判标签趋向分数高低的评分函数如下：<br><img src="https://www.zhihu.com/equation?tex=%5Cdisplaystyle+f%28x_i%2CW%2Cb%29%3DWx_i%2Bb" alt="avatar"><br>其中<strong>W</strong>是一个大小为[K x D]的矩阵，被称为权重，主要由我们训练得出，其中K为训练集中的类别，而D则取决另一参数<strong>x</strong>。<br><strong>x</strong>由我们的图像数据进行拉伸变为一个长度为D的列向量（后期深入学习之后说不定可以通过卷积，池化，大幅降低数据维度之后再计算分类？），随后<strong>x</strong>与<strong>W</strong>进行点乘后得到一个长度为K的列向量，最后再与偏差向量b相加，得到各分类评分。  </p>
-<p>我们将数据集的线性分类计算结果降至二维后可得图：<br><img src="https://pic2.zhimg.com/80/cfcb46408daa5353c38cb37e9bb6eb01_720w.jpg" alt="avatar"><br>可以看到，每一个图像是一个点，且图中有三个分类器划分相应对象的二维空间坐标区域。（这就是线性规划嘛！以前还没不知道线性规划这么有用）<br>但是使用线性分类是有局限性的，有许多函数图像是无法线性划分的。例如处于1、3或2、4两个对立象限的数据分类，相似的还有同心圆，他们的函数分布领域无法用一条线性函数划分出来。</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
-<li>我们在评分函数中输入的参数为矩阵，因此我们能够在运行程序时能够并行运算D个分类器（D为数据类型个数）。</li>
-<li>对比KNN，分类器只需要进行一次矩阵点乘以及相加，不知道简化到哪里去了。而且KNN需要使用ndarray方法将所有数据在内存中建立映射，恕我直言，实在是个败家货色。相比之下线性分类训练完就可以将训练数据丢掉，真是勤俭持家。娶妻当如线分法。</li>
+        <h4 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h4><p>因为电赛，学习，摸鱼等原因也摸了挺久的了，接近四个月没有更新过博客了。最近也是忙完了电赛，成绩不理想（学长独木难支），就想着还是得通过更新博客，记录学习进度，鞭策一下自己。因为明年电赛想做数字信号处理方面的题目，所以最近入了FPGA这个深坑。本专栏主要记录我用Verilog进行FPGA开发的进程。（本专栏纯属照本宣科）</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>最近一直在瞎玩儿FPGA，想到什么做什么，陆陆续续做了SPI,FIR,FSMC，AD/DA采集等功能。没有一个明确的开发流程以及目标，导致开发混乱，进步缓慢，到现在也没做出一个能用的东西。所以FPGA开发第一步，还是要确定开发流程。这里以小梅哥教程中给出的流程为例：</p>
+<ol>
+<li>设计定义</li>
+<li>设计输入：原理图，HDL，IP</li>
+<li>分析和综合：分析设计所描述的逻辑功能，并报告设计中的语法和逻辑错误</li>
+<li>功能仿真：作用：1、验证你所设计的逻辑是否正确    2、辅助分析设计里面存在的问题   3、协助了解我们设计的代码对应的逻辑电路运行时的信号波形</li>
+<li>布局布线</li>
+<li>时序仿真(modelsim)</li>
+<li>IO分配以及配置文件的生成</li>
+<li>配置（烧写FPGA）</li>
+<li>在线调试(signaltap……)</li>
+</ol>
+<p>以使用二选一多路器点亮LED为例，演示开发流程。</p>
+<ul>
+<li>设计定义<br>两个输入IO，a、b。LED灯的状态由a、b两端口的状态决定。<br>有一输入按键。当输入按键按下时，LED灯与a端口状态保持一致。输入按键释放时，LED灯与b端口状态保持一致。</li>
+<li><p>设计输入<br>在Quartus中创建工程,这部分不赘述。工程代码结构如下Pseudocode所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module      &#x2F;&#x2F;模块开始</span><br><span class="line">(</span><br><span class="line">    &#x2F;*</span><br><span class="line">    定义端口</span><br><span class="line">    &#x2F;*</span><br><span class="line">)</span><br><span class="line">endmodule   &#x2F;&#x2F;模块结束</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析和综合<br>点击compile,经编译器综合无误即可。最后得到的RTL图如下</p>
+</li>
 </ul>
-<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>我们在进行线性分类时，一般来说超参W的训练效果不会太理想，许多数据无法归类到正确的标签。就比如课件中对猫的分类，从分数上来看，它更像是一只狗而非是猫（秦川的猫狗二相性成立）。<br><img src="https://pic3.zhimg.com/80/7c204cd1010c0af1e7b50000bfff1d8e_720w.jpg" alt><br>此时，损失函数的引入就能够用于量化表示评分函数结果的误差。直观地讲，当评分函数输出结果与真实结果之间差异越大，损失函数输出越大，反之越小。<br>损失函数的形式多种多样，而在cs231n上，主要教授了两种，分别为<strong>多类支持向量机损失 Multiclass Support Vector Machine Loss</strong>以及<strong>Softmax分类器</strong>。接下来我们将分别介绍其原理。  </p>
-<h2 id="多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss"><a href="#多类支持向量机损失-Multiclass-Support-Vector-Machine-Loss" class="headerlink" title="多类支持向量机损失 Multiclass Support Vector Machine Loss"></a>多类支持向量机损失 Multiclass Support Vector Machine Loss</h2><p>多类支持向量机损失是最常用的一种损失函数，其原理主要是想在正确分类上的得分始终比不正确分类上的高出一个边际值$\Delta$。让我们看看SVM的定义：<br><img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/svm.svg" alt><br>在该定义式中，$S_i$为错误分类分数，而$S_{y_i}$为正确分类分数。这里有一个官方的举例用以说明其应用。  </p>
-<blockquote>
-<p>举例：用一个例子演示公式是如何计算的。假设有3个分类，并且得到了分值$s=[13,-7,11]。其中第一个类别是正确类别，即$y_{i}=0。同时假设$\Delta$是10（后面会详细介绍该超参数）。上面的公式是将所有不正确分类$j\neq y_{i}$加起来，所以我们得到两个部分：<img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/exm_1.svg" alt>  </p>
-<p>在第一部分中，13与-7相差近20，大大超过安全边界值$\Delta$,因此损失值为0。而第二部分中，13与11之间的差距上式计算完成后，我们可以得到关于超参W的损失值为8。由此可见，损失函数只关心正确分类与错误分类分值相差小于$\Delta$的数据。而正确与不正确分类分数间相差越大，超参W中相关正确分类的满意度就越高。<br>我们对于预测训练集数据分类标签的情况总有一些不满意的，而损失函数就能将这些不满意的程度量化。  </p>
-</blockquote>
-<p>并且我们还可以通过正则化以及使用平方折叶损失函数来加大惩罚，其中正则化可以特殊地加大某一特定超参的惩罚程度，减少模糊性。  </p>
-<h2 id="Softmax分类器"><a href="#Softmax分类器" class="headerlink" title="Softmax分类器"></a>Softmax分类器</h2><p>Softmax也是常用分类器之一,与SVM不同，Softmax的输出是以归一化的分类概率呈现的，也就是说Softmax分类器能够直观呈现一份数据属于各个标签的概率高低；除此之外Softmax分类器还将SVM中的折叶损失替换为了<strong>交叉熵损失（cross-entropy loss）</strong>。公式如下：<br><img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmax.svg" alt><br>其中$y_i$为正确分类的索引，$f_j$用来表示各类评分。当然你同样可以在定义式中加上正则化损失$R(W)$。<br>而这个公式之所以被叫做Softmax分类器，就在于其使用了softmax函数：其输入值是一个由各标签的评分值组成的向量$z$，函数对其进行压缩，输出一个向量，映射在[0,1]之间，所有元素相加为1，以此表示概率。相比于SVM分类器只能通过计算结果之间的相对差距判断不满意程度，这种用概率表示法更为直观呢。</p>
-<p><img src="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/softmx_fun.svg" alt><br>具体计算方法可以参见CS231N的课堂视频。<br>水完（mole）</p>
+<p><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/mux.png" alt="RTL"></p>
+<ul>
+<li>功能仿真<br>编写test_bench文件。有三个激励源，分别为signal a,signal b,key_in。将三个激励源连接到用户设计的电路中去，最后观察led_out的状态。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#96;timescale 1ns&#x2F;1ps &#x2F;&#x2F; 仿真步进&#x2F;仿真精度</span><br><span class="line"></span><br><span class="line">module mux_tb ;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;激励信号定义，对应连接到待测试模块的输入端口</span><br><span class="line">    reg siganl_a;</span><br><span class="line">    reg signal_b;</span><br><span class="line">    reg signal_c;</span><br><span class="line">&#x2F;&#x2F;待测信号定义，对应连接到待测试模块的输出端口</span><br><span class="line">    wire led;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;实例化模块</span><br><span class="line">    mux mux_inst(</span><br><span class="line">        .a(signal_a),</span><br><span class="line">        .b(signal_b),</span><br><span class="line">        .key_in(signal_c),</span><br><span class="line">        .led_out(led)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;初始化产生激励</span><br><span class="line">    initial begin</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 0;signal_c &#x3D; 0;</span><br><span class="line">        #100;&#x2F;&#x2F;延时100ns</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 0;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 1;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 1;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 0;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 0;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 1;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 1;signal_c &#x3D; 1;</span><br><span class="line">        #200;</span><br><span class="line"></span><br><span class="line">        $stop;&#x2F;&#x2F;停止波形</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/仿真.png" alt="simulation"></p>
+<p>可以看到，当key_in为低时，LED灯与a端口状态保持一致。key_in为高时，LED灯与b端口状态保持一致。</p>
+<ul>
+<li>布局布线<br>咱毕竟不是专业工程师，就全交给compile了。</li>
+<li>时序仿真<br>我们选择Tool→Run simulation tool→Gate level(门级仿真)。模式为1.2V，0度，中速运行。随后可在Modle sim中得到如下时序图。<br><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/时序仿真.png" alt="时序仿真"><br>可以看到，在这种极端情况下，信号中出现了一些脉冲。在进行测量后得出脉冲宽度约为0.251ns。并且还会出现逻辑延迟，在按键按下后几个时钟内，led的电平才发生跳变。</li>
+</ul>
+<p>+IO分配以及配置文件的生成<br>该部分请根据自己的开发板引脚进行分配。</p>
+<p>+在线调试<br>signaltap的调试功能属实强大，能够实时显示寄存器数据，还能够显示采集到的波形，这点确实比stm32的仿真功能来的更为强大，但是无法自行修改寄存器的数据也谈不上方便，只能调用Rom ip，将需要用到的激励数据存储在其中，需要时喂给寄存器。  关于其使用我将在后续的AD/DA实验中进行介绍。</p>
+<p>到这里，就算完成一个工程的开发了。</p>
+<p>最近一段时间也算是摸得透彻了，一开始想实现adc dma采集心电信号，结果dma传输有问题，搁置；想实现fpga与spi通讯，却一直不想动手写top module，fsmc也类似；昨天调了一晚上的LMT70，可是ADC采集误差过大，加上LMT70的采集误差，导致温度数据根本无法使用。所以这篇重启博文也算是整理目前所学，加上督促自己（上篇也是这么说的），顺便复健一下Markdown。（兄啊，这不是有手就行吗？）</p>
+<p>后续计划大概是，两周更新一次FPGA专栏，但是不会照本宣科了，计划把已经成功的AD/DA工程进行深挖，完善FIR功能，毕竟之前的FIR在衰减上有大问题。还有一周一次更新今年电赛A题的开发进度，目前问题极大，ADS1292无法正常读ID，LMT70采集不正常，害。哦，对了，说不定还会发一两张新买的DK试穿（好贵），毕竟这是没人看的博客，最适合我这小透明发自拍了。</p>
+<p>2020/10/25 21:05</p>
+<p>祝好梦</p>
+<p>ps:其实还有两篇8051系统板的串口下载以及使用vscode-cubemx进行stm32开发的博文，但是因为前者无法搞定串口下载，后者也无法搞定openocd下载（我命犯下载是吧），所以没有发出。</p>
 
       
 
@@ -241,7 +263,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -255,15 +277,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          verilog学习日志一
-        
-      </div>
-    </a>
   
+    <a href="/2020/07/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">机器学习——线性分类</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

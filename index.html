@@ -138,6 +138,109 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-verilog学习日志一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/">verilog学习日志一</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/" class="archive-article-date">
+  	<time datetime="2020-10-25T08:09:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h4><p>因为电赛，学习，摸鱼等原因也摸了挺久的了，接近四个月没有更新过博客了。最近也是忙完了电赛，成绩不理想（学长独木难支），就想着还是得通过更新博客，记录学习进度，鞭策一下自己。因为明年电赛想做数字信号处理方面的题目，所以最近入了FPGA这个深坑。本专栏主要记录我用Verilog进行FPGA开发的进程。（本专栏纯属照本宣科）</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>最近一直在瞎玩儿FPGA，想到什么做什么，陆陆续续做了SPI,FIR,FSMC，AD/DA采集等功能。没有一个明确的开发流程以及目标，导致开发混乱，进步缓慢，到现在也没做出一个能用的东西。所以FPGA开发第一步，还是要确定开发流程。这里以小梅哥教程中给出的流程为例：</p>
+<ol>
+<li>设计定义</li>
+<li>设计输入：原理图，HDL，IP</li>
+<li>分析和综合：分析设计所描述的逻辑功能，并报告设计中的语法和逻辑错误</li>
+<li>功能仿真：作用：1、验证你所设计的逻辑是否正确    2、辅助分析设计里面存在的问题   3、协助了解我们设计的代码对应的逻辑电路运行时的信号波形</li>
+<li>布局布线</li>
+<li>时序仿真(modelsim)</li>
+<li>IO分配以及配置文件的生成</li>
+<li>配置（烧写FPGA）</li>
+<li>在线调试(signaltap……)</li>
+</ol>
+<p>以使用二选一多路器点亮LED为例，演示开发流程。</p>
+<ul>
+<li>设计定义<br>两个输入IO，a、b。LED灯的状态由a、b两端口的状态决定。<br>有一输入按键。当输入按键按下时，LED灯与a端口状态保持一致。输入按键释放时，LED灯与b端口状态保持一致。</li>
+<li><p>设计输入<br>在Quartus中创建工程,这部分不赘述。工程代码结构如下Pseudocode所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module      &#x2F;&#x2F;模块开始</span><br><span class="line">(</span><br><span class="line">    &#x2F;*</span><br><span class="line">    定义端口</span><br><span class="line">    &#x2F;*</span><br><span class="line">)</span><br><span class="line">endmodule   &#x2F;&#x2F;模块结束</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析和综合<br>点击compile,经编译器综合无误即可。最后得到的RTL图如下</p>
+</li>
+</ul>
+<p><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/mux.png" alt="RTL"></p>
+<ul>
+<li>功能仿真<br>编写test_bench文件。有三个激励源，分别为signal a,signal b,key_in。将三个激励源连接到用户设计的电路中去，最后观察led_out的状态。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#96;timescale 1ns&#x2F;1ps &#x2F;&#x2F; 仿真步进&#x2F;仿真精度</span><br><span class="line"></span><br><span class="line">module mux_tb ;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;激励信号定义，对应连接到待测试模块的输入端口</span><br><span class="line">    reg siganl_a;</span><br><span class="line">    reg signal_b;</span><br><span class="line">    reg signal_c;</span><br><span class="line">&#x2F;&#x2F;待测信号定义，对应连接到待测试模块的输出端口</span><br><span class="line">    wire led;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;实例化模块</span><br><span class="line">    mux mux_inst(</span><br><span class="line">        .a(signal_a),</span><br><span class="line">        .b(signal_b),</span><br><span class="line">        .key_in(signal_c),</span><br><span class="line">        .led_out(led)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;初始化产生激励</span><br><span class="line">    initial begin</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 0;signal_c &#x3D; 0;</span><br><span class="line">        #100;&#x2F;&#x2F;延时100ns</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 0;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 1;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 0;signal_b &#x3D; 1;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 0;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 0;signal_c &#x3D; 1;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 1;signal_c &#x3D; 0;</span><br><span class="line">        #100;</span><br><span class="line">        signal_a &#x3D; 1;signal_b &#x3D; 1;signal_c &#x3D; 1;</span><br><span class="line">        #200;</span><br><span class="line"></span><br><span class="line">        $stop;&#x2F;&#x2F;停止波形</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/仿真.png" alt="simulation"></p>
+<p>可以看到，当key_in为低时，LED灯与a端口状态保持一致。key_in为高时，LED灯与b端口状态保持一致。</p>
+<ul>
+<li>布局布线<br>咱毕竟不是专业工程师，就全交给compile了。</li>
+<li>时序仿真<br>我们选择Tool→Run simulation tool→Gate level(门级仿真)。模式为1.2V，0度，中速运行。随后可在Modle sim中得到如下时序图。<br><img src="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/时序仿真.png" alt="时序仿真"><br>可以看到，在这种极端情况下，信号中出现了一些脉冲。在进行测量后得出脉冲宽度约为0.251ns。并且还会出现逻辑延迟，在按键按下后几个时钟内，led的电平才发生跳变。</li>
+</ul>
+<p>+IO分配以及配置文件的生成<br>该部分请根据自己的开发板引脚进行分配。</p>
+<p>+在线调试<br>signaltap的调试功能属实强大，能够实时显示寄存器数据，还能够显示采集到的波形，这点确实比stm32的仿真功能来的更为强大，但是无法自行修改寄存器的数据也谈不上方便，只能调用Rom ip，将需要用到的激励数据存储在其中，需要时喂给寄存器。  关于其使用我将在后续的AD/DA实验中进行介绍。</p>
+<p>到这里，就算完成一个工程的开发了。</p>
+<p>最近一段时间也算是摸得透彻了，一开始想实现adc dma采集心电信号，结果dma传输有问题，搁置；想实现fpga与spi通讯，却一直不想动手写top module，fsmc也类似；昨天调了一晚上的LMT70，可是ADC采集误差过大，加上LMT70的采集误差，导致温度数据根本无法使用。所以这篇重启博文也算是整理目前所学，加上督促自己（上篇也是这么说的），顺便复健一下Markdown。（兄啊，这不是有手就行吗？）</p>
+<p>后续计划大概是，两周更新一次FPGA专栏，但是不会照本宣科了，计划把已经成功的AD/DA工程进行深挖，完善FIR功能，毕竟之前的FIR在衰减上有大问题。还有一周一次更新今年电赛A题的开发进度，目前问题极大，ADS1292无法正常读ID，LMT70采集不正常，害。哦，对了，说不定还会发一两张新买的DK试穿（好贵），毕竟这是没人看的博客，最适合我这小透明发自拍了。</p>
+<p>2020/10/25 21:05</p>
+<p>祝好梦</p>
+<p>ps:其实还有两篇8051系统板的串口下载以及使用vscode-cubemx进行stm32开发的博文，但是因为前者无法搞定串口下载，后者也无法搞定openocd下载（我命犯下载是吧），所以没有发出。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/25/verilog%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97%E4%B8%80/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-机器学习——线性分类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
